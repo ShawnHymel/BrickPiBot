@@ -16,6 +16,7 @@
 # CONNECTIONS-
 # 	Left Motor  - Port A
 # 	Right Motor - Port D
+#   Cannon Motor - Port B
 #
 # PREREQUISITES
 #	Tornado Web Server for Python
@@ -65,6 +66,8 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 		  c = "4"
 		if message == "b":
 		  c = "5"
+        if message == "s":
+          c = "9"
 		print c
 		if c == '8' :
 		  print "Running Forward"
@@ -86,6 +89,12 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 		  print "Stopped"
 		  BrickPi.MotorSpeed[PORT_A] = 0
 		  BrickPi.MotorSpeed[PORT_D] = 0
+        elif c == '9' :
+          print "Fire"
+          BrickPi.MotorSpeed[PORT_B] = 200
+          time.sleep(2):
+          BrickPi.MotorSpeed[PORT_B] = 0
+          
 		BrickPiUpdateValues();                # BrickPi updates the values for the motors
 		print "Values Updated"
 	def on_close(self):
