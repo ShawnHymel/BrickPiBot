@@ -1,4 +1,12 @@
 <!--
+ Program Name: Browser_Client_Coder.html                                     
+ =======================================
+ Modified by: Shawn Hymel
+ Date: February 16, 2014
+ 
+ Added shoot button to control a motor connected to Motor port B
+<!--
+
 ########################################################################                                                                 
 # Program Name: Browser_Client_Coder.html                                     
 # ================================     
@@ -30,23 +38,27 @@
 
 <p>            
 <!-- Creating press buttons  on the webpage-->                               
-<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 550px; top: 100px" type="button" value="Accelerate" onclick="accelerate(); " />
+<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 150px; top: 100px" type="button" value="Forward" onclick="accelerate(); " />
 </p>
 
 <p>                                        
-<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 450px; top: 200px" type="button" value="Steer Left" onclick="steer_left(); " />
+<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 50px; top: 200px" type="button" value="Left" onclick="steer_left(); " />
 </p>
 
 <p>                                        
-<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 550px; top: 200px" type="button" value="Stop" onclick="stop(); " />
+<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 150px; top: 200px" type="button" value="Stop" onclick="stop(); " />
 </p>
 
 <p>                                        
-<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 650px; top: 200px" type="button" value="Steer Right" onclick="steer_right(); " />
+<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 250px; top: 200px" type="button" value="Right" onclick="steer_right(); " />
 </p>
 
 <p>                                        
-<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 550px; top: 300px" type="button" value="Reverse" onclick="reverse(); " />
+<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 150px; top: 300px" type="button" value="Back" onclick="reverse(); " />
+</p>
+
+<p>                                        
+<input id="touch" style="height: 100px; width: 100px; position: absolute; left: 550px; top: 200px" type="button" value="Fire!" onclick="shoot(); " />
 </p>
 
 </br></br></br></br>
@@ -76,12 +88,13 @@ var down;
 var left;
 var right;
 var brakes;
+var shoot;
 
 // defines a variable that controls the forward movement
 function accelerate()       
 {
 	up = "u";               // when up == "u" the bot moves forward 
-	down = "aaa";left = "aaa";right = "aaa";brakes = "aaa";       // When up button is pressed other buttons(variables) should be turned off.
+	down = "aaa";left = "aaa";right = "aaa";brakes = "aaa";shoot = "aaa";// When up button is pressed other buttons(variables) should be turned off.
     setup2();        		// Goes to websocket connection function
 }  
 
@@ -89,7 +102,7 @@ function accelerate()
 function reverse()
 {
 	down = "d";
-	up = "aaa";left = "aaa";right = "aaa";brakes = "aaa";
+	up = "aaa";left = "aaa";right = "aaa";brakes = "aaa";shoot = "aaa";
 	setup2();
 }
 
@@ -97,7 +110,7 @@ function reverse()
 function steer_left()
 {
 	left = "l";
-	up = "aaa";down = "aaa";right = "aaa";brakes = "aaa";
+	up = "aaa";down = "aaa";right = "aaa";brakes = "aaa";shoot = "aaa";
 	setup2();
 }
 
@@ -105,16 +118,23 @@ function steer_left()
 function steer_right()
 {
 	right = "r";
-	up = "aaa";down = "aaa";left = "aaa";brakes = "aaa";
+	up = "aaa";down = "aaa";left = "aaa";brakes = "aaa";shoot = "aaa";
 	setup2();
 }
 
 // defines a variable that stops the robot
 function stop()       
 {
-	up = "aaa";down = "aaa";left = "aaa";right = "aaa";brakes = "b";
+	up = "aaa";down = "aaa";left = "aaa";right = "aaa";shoot = "aaa";brakes = "b";
 	setup2();
 }		 
+// defines a variable that fires the main cannon
+function shoot()
+{
+    shoot = "s";
+    up = "aaa";down = "aaa";left = "aaa";right = "aaa";brakes = "aaa";
+    setup2();
+}
 
 // Creates the websockets connection 
 function setup2()         
@@ -183,6 +203,10 @@ function setup2()
 			{
 				socket.send("b");
 			}
+			if(shoot == "s")
+			{
+			    socket.send("s");
+		    }
 		}
 		function arrows()
 		{
@@ -197,6 +221,9 @@ function setup2()
 				break; 
 				case 17:
 				socket.send("b");
+				break;
+				case 32:
+				socket.send("s");
 				break;
 				case 37:
 				socket.send("l");
